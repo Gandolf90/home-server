@@ -2,7 +2,7 @@ version: '2'
 
 services:
   proxy:
-    image: jwilder/nginx-proxy
+    build: ./proxy
     container_name: proxy
     ports:
       - 80:80
