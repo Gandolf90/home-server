@@ -28,8 +28,8 @@ services:
     volumes:
       - ./nextcloud:/var/www/html
     environment:
-      - MYSQL_HOST=db
-      - REDIS_HOST=redis
+      - MYSQL_HOST=${MYSQL_HOST}
+      - REDIS_HOST=${REDIS_HOST}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
