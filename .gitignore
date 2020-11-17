@@ -1,5 +1,4 @@
 .env
-/nextcloud/*
 /portainer/*
 /certs/*
 /html/*
