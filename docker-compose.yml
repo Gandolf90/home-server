@@ -14,11 +14,6 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    restart: always
-
   nextcloud_fpm:
     image: nextcloud:fpm-alpine
     container_name: nextcloud_fpm
@@ -26,14 +21,11 @@ services:
     volumes:
       - ./nextcloud:/var/www/html
     environment:
-      - MYSQL_HOST=${MYSQL_HOST}
-      - REDIS_HOST=${REDIS_HOST}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     depends_on:
       - db
-      - redis
 
   nextcloud_nginx:
     build: ./nginx
@@ -43,24 +35,11 @@ services:
       - ./nextcloud:/var/www/html:ro
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     depends_on:
       - nextcloud_fpm
     networks:
       - proxy-tier
       - default
-
-  nextcloud_cron:
-    image: nextcloud:fpm-alpine
-    container_name: nextcloud_cron
-    restart: always
-    volumes:
-      - ./nextcloud:/var/www/html
-    entrypoint: /cron.sh
-    depends_on:
-      - db
-      - redis
 
   proxy:
     build: ./proxy
@@ -69,8 +48,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    labels:
-      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
       - ./certs:/etc/nginx/certs:ro
       - ./vhost.d:/etc/nginx/vhost.d
@@ -78,20 +55,23 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-tier
+    depends_on:
+      - omgwtfssl  
 
-  letsencrypt-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt
-    restart: always
+  omgwtfssl:
+    image: paulczar/omgwtfssl
+    container_name: ssl
+    restart: "no"
     volumes:
-      - ./certs:/etc/nginx/certs
-      - ./vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/certs
+    environment:
+      - SSL_SUBJECT=${VIRTUAL_HOST}
+      - CA_SUBJECT=${VIRTUAL_HOST_EMAIL}
+      - SSL_KEY=/certs/servhostname.local.key
+      - SSL_CSR=/certs/servhostname.local.csr
+      - SSL_CERT=/certs/servhostname.local.crt
     networks:
       - proxy-tier
-    depends_on:
-      - proxy
 
   portainer:
     image: portainer/portainer-ce
@@ -117,19 +97,19 @@ services:
     links:
       - db
 
-  factorio-server-manager:
-    image: majormjr/factorio-server-manager
-    container_name: factorio-server-manager
-    restart: always
-    ports: 
-      - '88:80'
-      - '444:443'
-      - '34197:34197'
-    volumes:
-      - ./factorio/saves:/opt/factorio/saves
-      - ./factorio/mods:/opt/factorio/mods
-      - ./factorio/config:/opt/factorio/config
-      - ./security:/security
+  #factorio-server-manager:
+  #  image: majormjr/factorio-server-manager
+  #  container_name: factorio-server-manager
+  #  restart: always
+  #  ports: 
+  #    - '80:80'
+  #    - '443:443'
+  #    - '34197:34197'
+  #  volumes:
+  #    - ./factorio/saves:/opt/factorio/saves
+  #    - ./factorio/mods:/opt/factorio/mods
+  #    - ./factorio/config:/opt/factorio/config
+  #    - ./security:/security
 
 networks:
   proxy-tier:
