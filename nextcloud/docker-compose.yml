@@ -1,12 +1,3 @@
-# NextCLoud with MariaDB/MySQL all behind Nginx acting as a Reverse Proxy with SSL Encryption from LetsEcrypt.
-#
-# During initial NextCLoud setup, select "Storage & database" --> "Configure the database" --> "MySQL/MariaDB"
-# Database user: nextcloud 
-# Database password: nextcloud
-# Database name: nextcloud
-# Database host: replace "localhost" with "db" the same name as the data base container name.
-#
-
 version: '2'
 
 services:
