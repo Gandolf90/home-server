@@ -4,7 +4,7 @@
 Edit the docker-compose.yml file to your liking 
 
 ```markdown
-- environment variables (DOMAIN & DOMAIN@EMAIL)
+- environment variables (DOMAIN & DOMAIN@EMAIL) -> just copy .env.example -> .env & edit it!
 - change root password of Maria-DB
 - change persistant data volumes for the containers
 ```
