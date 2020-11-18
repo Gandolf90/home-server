@@ -1,5 +1,4 @@
 .env
-/nextcloud/*
 /portainer/*
 /certs/*
 /html/*
@@ -9,3 +8,5 @@
 /vhost.d/*
 /factorio/*
 
+/nextcloud/proxy/*
+/nextcloud/nextcloud/*
