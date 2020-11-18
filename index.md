@@ -1,37 +1,44 @@
-## Welcome to GitHub Pages
+## Home Server Gandolf Like!
+### Startup
 
-You can use the [editor on GitHub](https://github.com/Gandolf90/home-server/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Edit the docker-compose.yml file to your liking 
 
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+- environment variables (DOMAIN & DOMAIN@EMAIL)
+- change root password of Maria-DB
+- change persistant data volumes for the containers
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Before you start up the containers for this to work you need to create a seperate network.
 
-### Jekyll Themes
+```markdown
+-$ docker network create nginx-proxy
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Gandolf90/home-server/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+
+```markdown
+-$ docker-compose up -d db
+```
+
+
+```markdown
+-$ docker-compose up -d
+```
+
+```markdown
+(stops and removes these containers)
+-$ docker-compose down 
+
+(pulls the new updated images)
+-$ docker-compose pull 
+
+(starts your containers with the new updated images)
+-$ docker-compose up -d 
+```
+
+In the "docker-compose.yml" are the Factorio Server disabled.
+Try to enable and change ports and stuff!
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Check out my [github](https://github.com/Gandolf90/home-server) 
