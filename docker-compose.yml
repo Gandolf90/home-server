@@ -97,19 +97,21 @@ services:
     links:
       - db
 
-  #factorio-server-manager:
-  #  image: majormjr/factorio-server-manager
-  #  container_name: factorio-server-manager
-  #  restart: always
-  #  ports: 
-  #    - '80:80'
-  #    - '443:443'
-  #    - '34197:34197'
-  #  volumes:
-  #    - ./factorio/saves:/opt/factorio/saves
-  #    - ./factorio/mods:/opt/factorio/mods
-  #    - ./factorio/config:/opt/factorio/config
-  #    - ./security:/security    
+  factorio-server-manager:
+   build: ./factorio-manager/.
+   container_name: factorio-server-manager
+   restart: always
+   ports: 
+     - '8080:80'
+     - '444:443'
+     - '34197:34197'
+   volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./factorio/saves:/opt/factorio/saves
+    - ./factorio/mods:/opt/factorio/mods
+    - ./factorio/config:/opt/factorio/config
+    - ./security:/security
 
 networks:
   proxy-tier:
