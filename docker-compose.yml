@@ -55,6 +55,9 @@ services:
       - ./nextcloud/apps:/var/www/html/apps
       - ./nextcloud/config:/var/www/html/config
       - ./nextcloud/data:/var/www/html/data
+      - ./nextcloud/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+    #environment:
+    #  - NEXTCLOUD_VERSION=20.0.2
     networks:
       - proxy-tier
     restart: always
