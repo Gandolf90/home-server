@@ -26,6 +26,13 @@ After you let that start up spin up the rest.
 ```markdown
 -$ docker-compose up -d
 ```
+
+```markdown
+-$ docker-compose down 
+-$ sudo touch nextcloud/config/CAN_INSTALL
+-$ sudo chown -R www-data:www-data nextcloud/
+```
+
 Once you have done this let LetsEncrypt get the certs and everything set up, it may take awhile so be patient.
 
 Now access your DOMAIN and do the initial setup of NextCloud and your all set.
