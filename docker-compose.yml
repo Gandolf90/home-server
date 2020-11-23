@@ -106,7 +106,7 @@ services:
    ports: 
      - '8080:80'
      - '444:443'
-     - '34197:34197'
+     - '34197:34197/udp'
    volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
