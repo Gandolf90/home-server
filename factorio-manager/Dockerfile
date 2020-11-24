@@ -1,4 +1,4 @@
-# glibc is required for Factorio Server binaries to run
+glibc is required for Factorio Server binaries to run
 FROM frolvlad/alpine-glibc
 
 ENV FACTORIO_VERSION=latest \
@@ -7,7 +7,7 @@ ENV FACTORIO_VERSION=latest \
 
 VOLUME /opt/factorio/saves /opt/factorio/mods /opt/factorio/config /security
 
-RUN apk add --no-cache curl tar unzip nginx openssl xz
+RUN apk add --no-cache curl tar unzip nginx openssl xz nano
 
 WORKDIR /opt/
 
@@ -20,6 +20,8 @@ RUN curl -s -L -S -k https://www.factorio.com/get-download/$FACTORIO_VERSION/hea
     rm /tmp/factorio-server-manager-linux_$MANAGER_VERSION.zip && \
     mkdir -p /run/nginx && \
     chown nginx:root /var/lib/nginx
+
+# FROM majormjr/factorio-server-manager
 
 COPY "init.sh" "/opt/init.sh"
 COPY "nginx.conf" "/etc/nginx/nginx.conf"
