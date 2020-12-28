@@ -8,5 +8,6 @@
 /vhost.d/*
 /factorio/*
 
-/nextcloud/proxy/*
-/nextcloud/nextcloud/*
+/nextcloud/proxy
+/nextcloud/apps
+/nextcloud/nextcloud
