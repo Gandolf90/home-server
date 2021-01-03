@@ -1,8 +1,0 @@
-FROM majormjr/factorio-server-manager
-
-COPY "init.sh" "/opt/init.sh"
-COPY "nginx.conf" "/etc/nginx/nginx.conf"
-
-EXPOSE 80/tcp 443/tcp 34190-34200/udp
-
-ENTRYPOINT ["sh", "/opt/init.sh"]

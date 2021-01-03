@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   proxy:
@@ -16,11 +16,17 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-tier
+    depends_on:
+      - app
     restart: always
 
-  letsencrypt-companion:
+  ssl:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-companion
+    container_name: ssl
+    networks:
+      - proxy-tier
+    depends_on:
+      - proxy
     volumes_from:
       - proxy
     volumes:
@@ -30,7 +36,7 @@ services:
 
   web:
     image: nginx
-    container_name: nextcloud_webserver
+    container_name: nc_webserver
     volumes:
       - ./nextcloud/nginx.conf:/etc/nginx/nginx.conf:ro
     links:
@@ -49,7 +55,7 @@ services:
 
   app:
     image: nextcloud:fpm
-    container_name: nextcloud_fpm
+    container_name: nc_fpm
     links:
       - db
     volumes:
@@ -92,32 +98,18 @@ services:
     container_name: adminer
     restart: always
     ports:
-      - '8181:8080'
+      - 8181:8080
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     links:
       - db
-
-  factorio-server-manager:
-   build: ./factorio-manager/.
-   container_name: factorio-server-manager
-   restart: always
-   ports: 
-     - '8080:80'
-     - '444:443'
-     - '34197:34197/udp'
-   volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
-    - ./factorio/saves:/opt/factorio/saves
-    - ./factorio/mods:/opt/factorio/mods
-    - ./factorio/config:/opt/factorio/config
-    - ./security:/security
+    depends_on:
+      - db
+    networks:
+      - proxy-tier
 
 networks:
   proxy-tier:
     external:
       name: nginx-proxy
-
-
